@@ -13,15 +13,11 @@ def bus_stations(request):
     with open(settings.BUS_STATION_CSV, newline='') as csvfile:
         reader = csv.DictReader(csvfile)
         list_data = [item for item in reader]
-        print(list_data)
 
-    page_number = request.GET.get("page", default=1)
-    if page_number.isnumeric():
-        page = int(page_number)
-    else:
-        page = 1
+    page_number = int(request.GET.get("page", 1))
+
     paginator = Paginator(list_data, 10)
-    page_pag = paginator.get_page(page)
+    page_pag = paginator.get_page(page_number)
     bus_stations = page_pag.object_list
 
     context = {
